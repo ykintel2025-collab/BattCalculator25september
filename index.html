@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thuisbatterij Calculator V28.0</title>
+    <title>Thuisbatterij Calculator V30.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,7 +13,7 @@
         <h1>Welkom bij de Thuisbatterij Calculator</h1>
         <p>Ontdek welke thuisbatterij het beste bij uw situatie past.</p>
         <a href="#" class="btn btn-primary" id="startBtn">Start de berekening</a>
-        <div class="version-display">Versie 28.0</div>
+        <div class="version-display">Versie 30.0</div>
     </div>
 
     <div id="calculator-scherm" class="container" style="display: none;">
@@ -21,8 +21,6 @@
         <div id="step-2" class="step-container"> <h2 class="question-title">Heeft u al zonnepanelen?</h2> <div class="answer-option" data-value="ja" onclick="selectAnswer(2, this)"><span class="icon">☀️</span>Ja</div> <div class="answer-option" data-value="nee" onclick="selectAnswer(2, this)"><span class="icon">🚫</span>Nee</div> </div>
         <div id="step-3" class="step-container"> <h2 class="question-title">Heeft u interesse om zonnepanelen te laten installeren?</h2> <div class="answer-option" data-value="ja" onclick="selectAnswer(3, this)"><span class="icon">👍</span>Ja, ik heb interesse</div> <div class="answer-option" data-value="nee" onclick="selectAnswer(3, this)"><span class="icon">👎</span>Nee, op dit moment niet</div> </div>
         <div id="step-4" class="step-container"> <h2 class="question-title">Hoeveel zonnepanelen heeft u?</h2> <input type="number" id="panelenInput" class="input-text" placeholder="Voer het aantal zonnepanelen in" min="1"> <div class="answer-option" onclick="selectAnswer(4, this)" data-value="dummy"> <span class="icon">#️⃣</span>Klik op 'Volgende' als u het aantal heeft ingevuld. </div> </div>
-        <div id="step-5" class="step-container"> <h2 class="question-title">Heeft u een elektrische auto?</h2> <div class="answer-option" data-value="ja" onclick="selectAnswer(5, this)"><span class="icon">🚗</span>Ja</div> <div class="answer-option" data-value="nee" onclick="selectAnswer(5, this)"><span class="icon">🚶</span>Nee</div> </div>
-        <div id="step-6" class="step-container"> <h2 class="question-title">Heeft u een warmtepomp?</h2> <div class="answer-option" data-value="ja" onclick="selectAnswer(6, this)"><span class="icon">🔥</span>Ja</div> <div class="answer-option" data-value="nee" onclick="selectAnswer(6, this)"><span class="icon">❄️</span>Nee</div> </div>
         
         <div id="resultaat-stap" class="step-container">
             <h2 class="question-title">Uw Persoonlijke Advies Dashboard</h2>
@@ -30,20 +28,14 @@
                 <div class="result-card main-recommendation"> <h2>Uw Aanbevolen Batterijcapaciteit</h2> <p><strong id="capaciteitResultaat" style="font-size: 1.5em;"></strong></p> </div>
                 <div class="result-card interactive-settings">
                     <h3>Verfijn uw advies</h3>
-                    <p class="chart-explanation">Pas de onderstaande instellingen aan om te zien hoe dit uw aanbevolen batterijcapaciteit beïnvloedt.</p>
                     <div class="setting-row"> <label for="verbruikSlider">Jaarlijks basisverbruik</label> <input type="range" id="verbruikSlider" min="1000" max="10000" step="100"> <span class="value-display" id="verbruikValue"></span> </div>
                     <div class="setting-row"> <label for="panelenSlider">Aantal zonnepanelen</label> <input type="range" id="panelenSlider" min="0" max="40" step="1"> <span class="value-display" id="panelenValue"></span> </div>
-                    <div class="setting-row"> <label for="evSelect">Elektrische auto</label> <select id="evSelect"> <option value="0">Geen</option> <option value="1800">Weinig (tot 10.000 km/j)</option> <option value="3600">Gemiddeld (10-20.000 km/j)</option> <option value="5400">Veel (20.000+ km/j)</option> </select> </div>
-                    <div class="setting-row"> <label for="wpSelect">Warmtepomp</label> <select id="wpSelect"> <option value="0">Geen</option> <option value="1500">Appartement</option> <option value="2500">Tussenwoning</option> <option value="3500">Hoekwoning / 2-onder-1-kap</option> <option value="4500">Vrijstaand</option> </select> </div>
                 </div>
-                <div class="result-card"> <h3>Totaal Jaarverbruik</h3> <p id="totaalVerbruikUitleg"></p> </div>
-                <div class="result-card" id="scenario1Div"> <h3>Scenario 1: Uw Situatie Zonder Zonnepanelen</h3> <p class="chart-explanation">Dit is uw <strong>standaard situatie</strong>. Alle stroom die u verbruikt wordt direct van het elektriciteitsnet gekocht.</p> <div class="chart-canvas-container"><canvas id="scenario1ChartCanvas"></canvas></div> <div class="chart-summary" id="summary1"></div> </div>
-                <div class="chart-card" id="scenario2Div"> <h3>Scenario 2: Met Zonnepanelen</h3> <p class="chart-explanation">Met zonnepanelen (gele lijn) wordt uw verbruik overdag deels gedekt. Het overschot wordt **teruggeleverd** aan het net (paars).</p> <div class="chart-canvas-container" id="scenario2CanvasContainer"><canvas id="scenario2ChartCanvas"></canvas></div> <div class="chart-summary" id="summary2"></div> </div>
-                <div class="chart-card" id="scenario3Div"> <h3>Scenario 3: Met Zonnepanelen & Thuisbatterij</h3> <p class="chart-explanation">Een thuisbatterij **lost het terugleveren op**. Uw zonne-overschot laadt de batterij op (donkerblauwe balken, onder de nullijn). 's Avonds verbruikt u deze opgeslagen energie (lichtblauwe balken).</p> <div class="chart-canvas-container" id="scenario3CanvasContainer"><canvas id="scenario3ChartCanvas"></canvas></div> <div class="chart-summary" id="summary3"></div> </div>
-            </div>
+                <div class="chart-card" id="priceChartDiv"> <h3>Dynamische Uurprijzen (Vandaag)</h3> <div class="chart-canvas-container"><canvas id="priceChartCanvas"></canvas></div> </div>
+                </div>
         </div>
         <div class="button-container"> <button class="btn btn-secondary" id="terugBtn" onclick="prevStep()">← Terug</button> <button class="btn btn-primary" id="volgendeBtn" onclick="nextStep()">Volgende →</button> </div>
-        <div class="version-display">Versie 28.0</div>
+        <div class="version-display">Versie 30.0</div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
