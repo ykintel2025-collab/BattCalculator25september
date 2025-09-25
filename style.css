@@ -35,5 +35,4 @@ h2.question-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; co
 .summary-item strong { display: block; font-size: 1.2em; }
 .chart-explanation { font-size: 0.9em; color: #555; margin-top: -10px; margin-bottom: 15px; text-align: left; }
 .placeholder-message { color: #888; text-align: center; padding: 50px 20px; font-style: italic; }
-#adviesSamenvatting { line-height: 1.6; text-align: left; }
 #totaalVerbruikUitleg { font-size: 1.1em; line-height: 1.6; text-align: center; }
