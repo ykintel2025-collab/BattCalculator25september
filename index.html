@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thuisbatterij Calculator V27.1</title>
+    <title>Thuisbatterij Calculator V26.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,7 +13,7 @@
         <h1>Welkom bij de Thuisbatterij Calculator</h1>
         <p>Ontdek welke thuisbatterij het beste bij uw situatie past.</p>
         <a href="#" class="btn btn-primary" id="startBtn">Start de berekening</a>
-        <div class="version-display">Versie 27.1</div>
+        <div class="version-display">Versie 26.1</div>
     </div>
 
     <div id="calculator-scherm" class="container" style="display: none;">
@@ -36,16 +36,16 @@
                     <div class="setting-row"> <label for="evSelect">Elektrische auto</label> <select id="evSelect"> <option value="0">Geen</option> <option value="1800">Weinig (tot 10.000 km/j)</option> <option value="3600">Gemiddeld (10-20.000 km/j)</option> <option value="5400">Veel (20.000+ km/j)</option> </select> </div>
                     <div class="setting-row"> <label for="wpSelect">Warmtepomp</label> <select id="wpSelect"> <option value="0">Geen</option> <option value="1500">Appartement</option> <option value="2500">Tussenwoning</option> <option value="3500">Hoekwoning / 2-onder-1-kap</option> <option value="4500">Vrijstaand</option> </select> </div>
                 </div>
-                <div class="chart-card" id="scenario1Div"> <h3>Scenario 1: Uw Situatie Zonder Zonnepanelen</h3> <p class="chart-explanation">Dit is uw <strong>standaard situatie</strong>. Alle stroom die u verbruikt wordt direct van het elektriciteitsnet gekocht.</p> <div class="chart-canvas-container"><canvas id="scenario1ChartCanvas"></canvas></div> <div class="chart-summary" id="summary1"></div> </div>
-                <div class="chart-card" id="scenario2Div"> <h3>Scenario 2: Met Zonnepanelen</h3> <p class="chart-explanation">Met zonnepanelen (gele lijn) wordt uw verbruik overdag deels gedekt. Het overschot wordt **teruggeleverd** aan het net (paars).</p> <div class="chart-canvas-container" id="scenario2CanvasContainer"><canvas id="scenario2ChartCanvas"></canvas></div> <div class="chart-summary" id="summary2"></div> </div>
-                <div class="chart-card" id="scenario3Div"> <h3>Scenario 3: Met Zonnepanelen & Thuisbatterij</h3> <p class="chart-explanation">Een thuisbatterij **lost het terugleveren op**. Uw zonne-overschot laadt de batterij op (donkerblauw, onder de nullijn). 's Avonds verbruikt u deze opgeslagen energie (lichtblauw).</p> <div class="chart-canvas-container" id="scenario3CanvasContainer"><canvas id="scenario3ChartCanvas"></canvas></div> <div class="chart-summary" id="summary3"></div> </div>
+                <div class="result-card"> <h3>Totaal Jaarverbruik</h3> <p id="totaalVerbruikUitleg"></p> </div>
+                <div class="result-card" style="grid-column: 1 / -1;"> <h3>Toelichting op uw Advies</h3> <p id="adviesSamenvatting"></p> </div>
+                <div class="chart-card" id="scenario1Div"> <h3>Scenario 1: Uw Situatie Zonder Zonnepanelen</h3> <p class="chart-explanation">Dit is uw <strong>standaard situatie</strong>. Alle stroom die u verbruikt (de rode balken) wordt direct van het elektriciteitsnet gekocht.</p> <div class="chart-canvas-container"><canvas id="scenario1ChartCanvas"></canvas></div> <div class="chart-summary" id="summary1"></div> </div>
+                <div class="chart-card" id="scenario2Div"> <h3>Scenario 2: Met Zonnepanelen</h3> <p class="chart-explanation">Met zonnepanelen (gele lijn) wordt uw verbruik overdag deels gedekt door eigen zonnestroom (groen). De stroom die u overhoudt, wordt **teruggeleverd** aan het net (paars).</p> <div class="chart-canvas-container" id="scenario2CanvasContainer"><canvas id="scenario2ChartCanvas"></canvas></div> <div class="chart-summary" id="summary2"></div> </div>
+                <div class="chart-card" id="scenario3Div"> <h3>Scenario 3: Met Zonnepanelen & Thuisbatterij</h3> <p class="chart-explanation">Een thuisbatterij **lost het terugleveren op**. Uw zonne-overschot wordt nu gebruikt om de batterij op te laden (donkerblauwe balken, onder de nullijn). 's Avonds verbruikt u deze opgeslagen energie (lichtblauwe balken).</p> <div class="chart-canvas-container" id="scenario3CanvasContainer"><canvas id="scenario3ChartCanvas"></canvas></div> <div class="chart-summary" id="summary3"></div> </div>
             </div>
         </div>
-        
         <div class="button-container"> <button class="btn btn-secondary" id="terugBtn" onclick="prevStep()">← Terug</button> <button class="btn btn-primary" id="volgendeBtn" onclick="nextStep()">Volgende →</button> </div>
-        <div class="version-display">Versie 27.1</div>
+        <div class="version-display">Versie 26.1</div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
