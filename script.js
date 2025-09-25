@@ -101,16 +101,17 @@ function setupInteractiveControls() {
         const eventType = (el.type === 'range' || el.tagName === 'SELECT') ? 'input' : 'change';
         el.addEventListener(eventType, recalculateAndRedraw);
     });
-    // Initial waardes instellen op basis van formAnswers
+
     document.getElementById('verbruikSlider').value = formAnswers['step-1'] || 3000;
     document.getElementById('panelenSlider').value = (formAnswers['step-2'] === 'ja' && formAnswers['step-4']) ? formAnswers['step-4'] : (formAnswers['step-3'] === 'ja' ? 12 : 0);
     document.getElementById('evSelect').value = formAnswers['step-5'] === 'ja' ? "3600" : "0";
     document.getElementById('wpSelect').value = formAnswers['step-6'] === 'ja' ? "2500" : "0";
+    
     recalculateAndRedraw();
 }
 
 function recalculateAndRedraw() {
-    const state = { 
+    const state = {
         basisVerbruikKwh: parseInt(document.getElementById('verbruikSlider').value),
         aantalPanelen: parseInt(document.getElementById('panelenSlider').value),
         evVerbruikKwh: parseInt(document.getElementById('evSelect').value),
@@ -131,7 +132,6 @@ function calculateAdvice(state) {
     }
     const dagelijkseOpbrengst = totaalWp * 0.9 / 365;
     
-    // Gecorrigeerd en genormaliseerd verbruiksprofiel
     const verbruikProfielRaw = [0.03,0.02,0.02,0.02,0.03,0.05,0.07,0.06,0.05,0.04,0.04,0.04,0.05,0.04,0.04,0.05,0.06,0.08,0.09,0.08,0.07,0.06,0.05,0.04];
     const sumProfiel = verbruikProfielRaw.reduce((a, b) => a + b, 0);
     const verbruikProfiel = verbruikProfielRaw.map(p => p / sumProfiel);
@@ -148,7 +148,7 @@ function calculateAdvice(state) {
     const afgerondeCapaciteit = Math.ceil(totaalOverschot / 5) * 5;
     const batterijCapaciteit = Math.max(5, afgerondeCapaciteit);
     
-    return { batterijCapaciteit, geschaaldVerbruik, geschaaldeOpbrengst, totaalOverschot };
+    return { batterijCapaciteit, geschaaldVerbruik, geschaaldeOpbrengst };
 }
 
 function updateDashboardUI(state, calcs) {
@@ -164,15 +164,6 @@ function updateDashboardUI(state, calcs) {
          <hr style="border: none; border-top: 1px solid #ccc; margin: 5px 0;">
          Totaal: <strong>${totaalVerbruik.toFixed(0)} kWh</strong>`;
     
-    let samenvatting = `Op basis van uw situatie is het geschatte jaarverbruik <strong>${totaalVerbruik.toFixed(0)} kWh</strong>. `;
-    if (state.aantalPanelen > 0) {
-        samenvatting += `Met uw <strong>${state.aantalPanelen} zonnepanelen</strong> wekt u overdag veel van uw eigen stroom op. Gemiddeld heeft u een dagelijks zonne-overschot van ongeveer <strong>${calcs.totaalOverschot.toFixed(1)} kWh</strong>. Dit overschot is ideaal om op te slaan in een thuisbatterij.`;
-        samenvatting += ` Om dit overschot optimaal te benutten en zo min mogelijk stroom terug te leveren aan het net, adviseren wij een batterij van <strong>${calcs.batterijCapaciteit.toFixed(1)} kWh</strong>. Hiermee kunt u uw eigen gratis zonnestroom 's avonds gebruiken.`;
-    } else {
-        samenvatting += `Zonder zonnepanelen is een thuisbatterij voornamelijk interessant in combinatie met een dynamisch energiecontract. Een basiscapaciteit van <strong>5.0 kWh</strong> is hiervoor een goed startpunt.`;
-    }
-    document.getElementById('adviesSamenvatting').innerHTML = samenvatting;
-
     const displayPanels = state.aantalPanelen > 0;
     document.getElementById('scenario2Div').style.display = displayPanels ? 'block' : 'none';
     document.getElementById('scenario3Div').style.display = displayPanels ? 'block' : 'none';
@@ -181,7 +172,7 @@ function updateDashboardUI(state, calcs) {
         document.getElementById('scenario3Div').innerHTML = `<div class="placeholder-message">Voeg zonnepanelen toe om de impact van een thuisbatterij te zien.</div>`;
     } else {
         if (!document.getElementById('scenario2ChartCanvas')) {
-            document.getElementById('scenario2Div').innerHTML = `<h3>Scenario 2: Met Zonnepanelen</h3> <p class="chart-explanation">De gele lijn toont uw totale zonne-opbrengst. Een deel dekt direct uw verbruik (groen). Het overschot wordt **teruggeleverd** aan het net (paars).</p> <div class="chart-canvas-container" id="scenario2CanvasContainer"><canvas id="scenario2ChartCanvas"></canvas></div> <div class="chart-summary" id="summary2"></div>`;
+            document.getElementById('scenario2Div').innerHTML = `<h3>Scenario 2: Met Zonnepanelen</h3> <p class="chart-explanation">Met zonnepanelen (gele lijn) wordt uw verbruik overdag deels gedekt door eigen zonnestroom (groen). Het overschot wordt **teruggeleverd** aan het net (paars).</p> <div class="chart-canvas-container" id="scenario2CanvasContainer"><canvas id="scenario2ChartCanvas"></canvas></div> <div class="chart-summary" id="summary2"></div>`;
             document.getElementById('scenario3Div').innerHTML = `<h3>Scenario 3: Met Zonnepanelen & Thuisbatterij</h3> <p class="chart-explanation">Een thuisbatterij **lost het terugleveren op**. Uw zonne-overschot wordt nu gebruikt om de batterij op te laden (donkerblauwe balken, onder de nullijn). 's Avonds verbruikt u deze opgeslagen energie (lichtblauwe balken).</p> <div class="chart-canvas-container" id="scenario3CanvasContainer"><canvas id="scenario3ChartCanvas"></canvas></div> <div class="chart-summary" id="summary3"></div>`;
         }
     }
